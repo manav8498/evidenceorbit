@@ -60,14 +60,14 @@ MCP tools: `check_trajectory`, `get_latent_errors`, `propose_recovery`, `apply_r
 flowchart TD
   runtime[Agent runtime]
   inst[Push events or adapter pull]
-  graph[Evidence graph]
+  egraph[Evidence graph]
   det[Hybrid detector]
   attr[Origin attributor]
   plan[Recovery planner]
   ckpt[Checkpoint adapter]
   audit[Hash-chained audit log]
 
-  runtime --> inst --> graph --> det --> attr --> plan --> ckpt
+  runtime --> inst --> egraph --> det --> attr --> plan --> ckpt
   det --> audit
   attr --> audit
   plan --> audit

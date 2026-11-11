@@ -6,14 +6,14 @@ EvidenceOrbit is a sidecar. It does not replace the agent loop. It watches a can
 flowchart TD
   runtime[Agent runtime]
   inst[Instrumentation: push events or adapter pull]
-  graph[Evidence graph]
+  egraph[Evidence graph]
   det[Hybrid detector]
   attr[Origin attributor]
   plan[Recovery planner]
   ckpt[Checkpoint adapter]
   audit[Hash-chained audit log]
 
-  runtime --> inst --> graph --> det
+  runtime --> inst --> egraph --> det
   det --> attr --> plan
   plan --> ckpt
   det --> audit
