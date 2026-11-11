@@ -1,0 +1,60 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0",
+      "default": "0.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "record_type": {
+      "enum": [
+        "detection",
+        "resolution",
+        "attribution",
+        "recovery_proposal",
+        "recovery_applied",
+        "recovery_refused",
+        "judge"
+      ],
+      "title": "Record Type",
+      "type": "string"
+    },
+    "session_id": {
+      "title": "Session Id",
+      "type": "string"
+    },
+    "ts": {
+      "title": "Ts",
+      "type": "string"
+    },
+    "prev_hash": {
+      "title": "Prev Hash",
+      "type": "string"
+    },
+    "content_hash": {
+      "title": "Content Hash",
+      "type": "string"
+    },
+    "body": {
+      "additionalProperties": true,
+      "title": "Body",
+      "type": "object"
+    }
+  },
+  "required": [
+    "id",
+    "record_type",
+    "session_id",
+    "ts",
+    "prev_hash",
+    "content_hash",
+    "body"
+  ],
+  "title": "AuditRecord",
+  "type": "object"
+}

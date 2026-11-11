@@ -1,0 +1,560 @@
+{
+  "$defs": {
+    "Attribution": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "detection_id": {
+          "title": "Detection Id",
+          "type": "string"
+        },
+        "origin_event_id": {
+          "title": "Origin Event Id",
+          "type": "string"
+        },
+        "origin_seq": {
+          "title": "Origin Seq",
+          "type": "integer"
+        },
+        "propagation_path": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Propagation Path",
+          "type": "array"
+        },
+        "propagation_summary": {
+          "title": "Propagation Summary",
+          "type": "string"
+        },
+        "unused_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unused Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "detection_id",
+        "origin_event_id",
+        "origin_seq",
+        "propagation_path",
+        "propagation_summary",
+        "unused_evidence_ids"
+      ],
+      "title": "Attribution",
+      "type": "object"
+    },
+    "CorrectiveSignal": {
+      "additionalProperties": false,
+      "properties": {
+        "instruction": {
+          "title": "Instruction",
+          "type": "string"
+        },
+        "evidence_event_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Event Ids",
+          "type": "array"
+        },
+        "quotes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Quotes",
+          "type": "array"
+        },
+        "do_not_repeat": {
+          "title": "Do Not Repeat",
+          "type": "string"
+        }
+      },
+      "required": [
+        "instruction",
+        "evidence_event_ids",
+        "quotes",
+        "do_not_repeat"
+      ],
+      "title": "CorrectiveSignal",
+      "type": "object"
+    },
+    "Detection": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "direct_contradiction",
+            "unused_counterevidence",
+            "contract_violation",
+            "internal_inconsistency",
+            "compounded_error"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "claim_event_id": {
+          "title": "Claim Event Id",
+          "type": "string"
+        },
+        "evidence_event_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Event Ids",
+          "type": "array"
+        },
+        "explanation": {
+          "title": "Explanation",
+          "type": "string"
+        },
+        "claim_fact": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Fact"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "evidence_fact": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Fact"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "constraint_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Constraint Id"
+        },
+        "judge": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/JudgeTrace"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "session_id",
+        "type",
+        "confidence",
+        "claim_event_id",
+        "evidence_event_ids",
+        "explanation"
+      ],
+      "title": "Detection",
+      "type": "object"
+    },
+    "EdgeKind": {
+      "enum": [
+        "supports",
+        "contradicts",
+        "derives_from",
+        "violates"
+      ],
+      "title": "EdgeKind",
+      "type": "string"
+    },
+    "Fact": {
+      "additionalProperties": false,
+      "properties": {
+        "subject": {
+          "title": "Subject",
+          "type": "string"
+        },
+        "predicate": {
+          "title": "Predicate",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "polarity": {
+          "default": "assert",
+          "enum": [
+            "assert",
+            "deny"
+          ],
+          "title": "Polarity",
+          "type": "string"
+        },
+        "source": {
+          "default": "structured",
+          "enum": [
+            "structured",
+            "text"
+          ],
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "subject",
+        "predicate",
+        "value"
+      ],
+      "title": "Fact",
+      "type": "object"
+    },
+    "GraphEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/EdgeKind"
+        },
+        "confidence": {
+          "default": 1.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "detail": {
+          "default": "",
+          "title": "Detail",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "target",
+        "kind"
+      ],
+      "title": "GraphEdge",
+      "type": "object"
+    },
+    "GraphNode": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/NodeKind"
+        },
+        "event_id": {
+          "title": "Event Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "seq": {
+          "title": "Seq",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "event_id",
+        "label",
+        "seq"
+      ],
+      "title": "GraphNode",
+      "type": "object"
+    },
+    "GraphSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "nodes": {
+          "items": {
+            "$ref": "#/$defs/GraphNode"
+          },
+          "title": "Nodes",
+          "type": "array"
+        },
+        "edges": {
+          "items": {
+            "$ref": "#/$defs/GraphEdge"
+          },
+          "title": "Edges",
+          "type": "array"
+        }
+      },
+      "required": [
+        "nodes",
+        "edges"
+      ],
+      "title": "GraphSnapshot",
+      "type": "object"
+    },
+    "JudgeTrace": {
+      "additionalProperties": false,
+      "description": "Every non-deterministic (or judge) decision is logged with identity.",
+      "properties": {
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "prompt_hash": {
+          "title": "Prompt Hash",
+          "type": "string"
+        },
+        "temperature": {
+          "title": "Temperature",
+          "type": "number"
+        },
+        "contradicts": {
+          "title": "Contradicts",
+          "type": "boolean"
+        },
+        "confidence": {
+          "title": "Confidence",
+          "type": "number"
+        },
+        "explanation": {
+          "title": "Explanation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "model",
+        "prompt_hash",
+        "temperature",
+        "contradicts",
+        "confidence",
+        "explanation"
+      ],
+      "title": "JudgeTrace",
+      "type": "object"
+    },
+    "NodeKind": {
+      "enum": [
+        "claim",
+        "evidence",
+        "goal",
+        "tool_result",
+        "observation",
+        "contract",
+        "other"
+      ],
+      "title": "NodeKind",
+      "type": "string"
+    },
+    "RecoveryProposal": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "detection_id": {
+          "title": "Detection Id",
+          "type": "string"
+        },
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "origin_event_id": {
+          "title": "Origin Event Id",
+          "type": "string"
+        },
+        "rewind_seq": {
+          "title": "Rewind Seq",
+          "type": "integer"
+        },
+        "checkpoint_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checkpoint Id"
+        },
+        "restore_scope": {
+          "enum": [
+            "partial_belief",
+            "full_state",
+            "external_blocked"
+          ],
+          "title": "Restore Scope",
+          "type": "string"
+        },
+        "corrective_signal": {
+          "$ref": "#/$defs/CorrectiveSignal"
+        },
+        "auto_executable": {
+          "title": "Auto Executable",
+          "type": "boolean"
+        },
+        "blocked_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Blocked Reason"
+        },
+        "destructive_event_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Destructive Event Ids",
+          "type": "array"
+        },
+        "mode": {
+          "default": "propose_only",
+          "enum": [
+            "propose_only",
+            "auto"
+          ],
+          "title": "Mode",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "detection_id",
+        "session_id",
+        "origin_event_id",
+        "rewind_seq",
+        "restore_scope",
+        "corrective_signal",
+        "auto_executable"
+      ],
+      "title": "RecoveryProposal",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0",
+      "default": "0.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "session_id": {
+      "title": "Session Id",
+      "type": "string"
+    },
+    "event_count": {
+      "title": "Event Count",
+      "type": "integer"
+    },
+    "detections": {
+      "items": {
+        "$ref": "#/$defs/Detection"
+      },
+      "title": "Detections",
+      "type": "array"
+    },
+    "attributions": {
+      "items": {
+        "$ref": "#/$defs/Attribution"
+      },
+      "title": "Attributions",
+      "type": "array"
+    },
+    "proposals": {
+      "items": {
+        "$ref": "#/$defs/RecoveryProposal"
+      },
+      "title": "Proposals",
+      "type": "array"
+    },
+    "graph": {
+      "$ref": "#/$defs/GraphSnapshot"
+    },
+    "audit_head": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Audit Head"
+    }
+  },
+  "required": [
+    "session_id",
+    "event_count",
+    "detections",
+    "attributions",
+    "proposals",
+    "graph"
+  ],
+  "title": "AnalysisReport",
+  "type": "object"
+}

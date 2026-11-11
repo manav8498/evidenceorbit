@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evidenceorbit"
+version = "0.1.0"
+description = "Framework-agnostic sidecar that detects latent errors in long-horizon agent trajectories from unused contradictory evidence, attributes their origin, and proposes surgical recovery."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [{ name = "EvidenceOrbit Contributors" }]
+keywords = ["llm", "agents", "trajectory", "contradiction", "recovery", "mcp"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Typing :: Typed",
+]
+dependencies = [
+  "pydantic>=2.6,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8",
+  "ruff>=0.8",
+  "mypy>=1.13",
+]
+
+[project.scripts]
+evidenceorbit = "evidenceorbit.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/manav8498/evidenceorbit"
+Documentation = "https://github.com/manav8498/evidenceorbit/tree/main/docs"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+evidenceorbit = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501", "UP042"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["evidenceorbit"]
+mypy_path = "src"
+
+[tool.ruff.lint.per-file-ignores]
+"src/evidenceorbit/benchmarks/corpus.py" = ["E501"]

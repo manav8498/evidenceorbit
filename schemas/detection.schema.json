@@ -1,0 +1,191 @@
+{
+  "$defs": {
+    "Fact": {
+      "additionalProperties": false,
+      "properties": {
+        "subject": {
+          "title": "Subject",
+          "type": "string"
+        },
+        "predicate": {
+          "title": "Predicate",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "polarity": {
+          "default": "assert",
+          "enum": [
+            "assert",
+            "deny"
+          ],
+          "title": "Polarity",
+          "type": "string"
+        },
+        "source": {
+          "default": "structured",
+          "enum": [
+            "structured",
+            "text"
+          ],
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "subject",
+        "predicate",
+        "value"
+      ],
+      "title": "Fact",
+      "type": "object"
+    },
+    "JudgeTrace": {
+      "additionalProperties": false,
+      "description": "Every non-deterministic (or judge) decision is logged with identity.",
+      "properties": {
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "prompt_hash": {
+          "title": "Prompt Hash",
+          "type": "string"
+        },
+        "temperature": {
+          "title": "Temperature",
+          "type": "number"
+        },
+        "contradicts": {
+          "title": "Contradicts",
+          "type": "boolean"
+        },
+        "confidence": {
+          "title": "Confidence",
+          "type": "number"
+        },
+        "explanation": {
+          "title": "Explanation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "model",
+        "prompt_hash",
+        "temperature",
+        "contradicts",
+        "confidence",
+        "explanation"
+      ],
+      "title": "JudgeTrace",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0",
+      "default": "0.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "session_id": {
+      "title": "Session Id",
+      "type": "string"
+    },
+    "type": {
+      "enum": [
+        "direct_contradiction",
+        "unused_counterevidence",
+        "contract_violation",
+        "internal_inconsistency",
+        "compounded_error"
+      ],
+      "title": "Type",
+      "type": "string"
+    },
+    "confidence": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "claim_event_id": {
+      "title": "Claim Event Id",
+      "type": "string"
+    },
+    "evidence_event_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Event Ids",
+      "type": "array"
+    },
+    "explanation": {
+      "title": "Explanation",
+      "type": "string"
+    },
+    "claim_fact": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Fact"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "evidence_fact": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Fact"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "constraint_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Constraint Id"
+    },
+    "judge": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/JudgeTrace"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "id",
+    "session_id",
+    "type",
+    "confidence",
+    "claim_event_id",
+    "evidence_event_ids",
+    "explanation"
+  ],
+  "title": "Detection",
+  "type": "object"
+}

@@ -1,0 +1,93 @@
+{
+  "$defs": {
+    "EventKind": {
+      "enum": [
+        "llm_call",
+        "tool_call",
+        "tool_result",
+        "observation",
+        "claim",
+        "goal",
+        "contract",
+        "human",
+        "checkpoint",
+        "system"
+      ],
+      "title": "EventKind",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "One ordered, addressable step in an agent trajectory.\n\nPush mode: the agent emits these directly.\nPull mode: adapters / MCP proxy synthesize them from runtime messages.",
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0",
+      "default": "0.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "seq": {
+      "minimum": 0,
+      "title": "Seq",
+      "type": "integer"
+    },
+    "ts": {
+      "title": "Ts",
+      "type": "string"
+    },
+    "session_id": {
+      "title": "Session Id",
+      "type": "string"
+    },
+    "kind": {
+      "$ref": "#/$defs/EventKind"
+    },
+    "actor": {
+      "default": "agent",
+      "title": "Actor",
+      "type": "string"
+    },
+    "parent_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Parent Ids",
+      "type": "array"
+    },
+    "text": {
+      "default": "",
+      "title": "Text",
+      "type": "string"
+    },
+    "payload": {
+      "additionalProperties": true,
+      "title": "Payload",
+      "type": "object"
+    },
+    "content_hash": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Content Hash"
+    }
+  },
+  "required": [
+    "id",
+    "seq",
+    "ts",
+    "session_id",
+    "kind"
+  ],
+  "title": "TrajectoryEvent",
+  "type": "object"
+}

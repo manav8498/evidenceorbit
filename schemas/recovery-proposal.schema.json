@@ -1,0 +1,136 @@
+{
+  "$defs": {
+    "CorrectiveSignal": {
+      "additionalProperties": false,
+      "properties": {
+        "instruction": {
+          "title": "Instruction",
+          "type": "string"
+        },
+        "evidence_event_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Event Ids",
+          "type": "array"
+        },
+        "quotes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Quotes",
+          "type": "array"
+        },
+        "do_not_repeat": {
+          "title": "Do Not Repeat",
+          "type": "string"
+        }
+      },
+      "required": [
+        "instruction",
+        "evidence_event_ids",
+        "quotes",
+        "do_not_repeat"
+      ],
+      "title": "CorrectiveSignal",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0",
+      "default": "0.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "detection_id": {
+      "title": "Detection Id",
+      "type": "string"
+    },
+    "session_id": {
+      "title": "Session Id",
+      "type": "string"
+    },
+    "origin_event_id": {
+      "title": "Origin Event Id",
+      "type": "string"
+    },
+    "rewind_seq": {
+      "title": "Rewind Seq",
+      "type": "integer"
+    },
+    "checkpoint_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Checkpoint Id"
+    },
+    "restore_scope": {
+      "enum": [
+        "partial_belief",
+        "full_state",
+        "external_blocked"
+      ],
+      "title": "Restore Scope",
+      "type": "string"
+    },
+    "corrective_signal": {
+      "$ref": "#/$defs/CorrectiveSignal"
+    },
+    "auto_executable": {
+      "title": "Auto Executable",
+      "type": "boolean"
+    },
+    "blocked_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Blocked Reason"
+    },
+    "destructive_event_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Destructive Event Ids",
+      "type": "array"
+    },
+    "mode": {
+      "default": "propose_only",
+      "enum": [
+        "propose_only",
+        "auto"
+      ],
+      "title": "Mode",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "detection_id",
+    "session_id",
+    "origin_event_id",
+    "rewind_seq",
+    "restore_scope",
+    "corrective_signal",
+    "auto_executable"
+  ],
+  "title": "RecoveryProposal",
+  "type": "object"
+}
